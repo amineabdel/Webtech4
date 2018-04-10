@@ -1,5 +1,7 @@
 package edu.ap.spring.model;
 
+
+
 public class Grade {
 
     private String firstName;
@@ -7,6 +9,12 @@ public class Grade {
     private Integer grade;
 
     public Grade() {
+    }
+
+    public Grade(String firstName, String lastName, Integer grade) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.grade = grade;
     }
 
     public String getFirstName() {

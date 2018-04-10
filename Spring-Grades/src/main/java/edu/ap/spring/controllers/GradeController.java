@@ -1,35 +1,48 @@
 package edu.ap.spring.controllers;
 
-import edu.ap.spring.model.*;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+
+import edu.ap.spring.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 public class GradeController {
 
-    private List<Grade> gradeList;
+    @Autowired
+    public List<Grade> grades = new ArrayList<>();
 
     public GradeController() {
-
-        gradeList = new ArrayList<>();
-
     }
 
-    @RequestMapping(
-            path="/grade",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    public void addGrade(@RequestBody Grade newGrade){
+    @RequestMapping("/")
+    public String grade(){
+        return "grade";
+    }
 
-        gradeList.add(newGrade);
+    @RequestMapping("/list")
+    public String list(Model model){
 
+        grades.add(new Grade("Silke", "Henderickx", 20));
+
+        model.addAllAttributes(grades);
+
+        System.out.println(model);
+
+        return "list";
+    }
+
+    @PostMapping("/grade")
+    public String addGrade(){
+
+
+
+        return "result";
     }
 
 }
