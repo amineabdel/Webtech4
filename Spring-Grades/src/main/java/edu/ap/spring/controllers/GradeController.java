@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.ap.spring.model.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,11 @@ import java.util.List;
 @Controller
 public class GradeController {
 
-    @Autowired
-    public List<Grade> grades = new ArrayList<>();
+    GradeRepository repository;
 
-    public GradeController() {
+    @Autowired
+    public GradeController(GradeRepository repository) {
+        this.repository = repository;
     }
 
     @RequestMapping("/")
@@ -28,18 +30,21 @@ public class GradeController {
     @RequestMapping("/list")
     public String list(Model model){
 
-        grades.add(new Grade("Silke", "Henderickx", 20));
-
-        model.addAllAttributes(grades);
-
-        System.out.println(model);
+        model.addAttribute("grades", repository.findAll());
 
         return "list";
     }
 
     @PostMapping("/grade")
-    public String addGrade(){
+    public String addGrade(@RequestParam("firstName") String firstName,
+                           @RequestParam("lastName") String lastName,
+                           @RequestParam("grade") int grade,
+                           Model model){
 
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("grade", grade);
+        repository.save(new Grade(firstName, lastName, grade));
 
 
         return "result";
